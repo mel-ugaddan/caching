@@ -1,0 +1,78 @@
+# ========================
+# Python bytecode
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ========================
+# Virtual environments
+# ========================
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# ========================
+# Environment variables
+# ========================
+.env
+.env.*
+!.env.example
+
+# ========================
+# Packaging / build
+# ========================
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ========================
+# Logs
+# ========================
+*.log
+
+# ========================
+# Jupyter
+# ========================
+.ipynb_checkpoints/
+
+# ========================
+# IDE / Editor
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ========================
+# OS files
+# ========================
+.DS_Store
+Thumbs.db
+
+# ========================
+# Testing / coverage
+# ========================
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# ========================
+# PyTorch / ML (optional)
+# ========================
+*.pt
+*.pth
+*.ckpt
+wandb/
+runs/
+
+# ========================
+# SQLite
+# ========================
+*.sqlite3

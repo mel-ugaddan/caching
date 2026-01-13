@@ -9,10 +9,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import sessionmaker
 import asyncio
 
-from utils.connection import async_engine,cache_inprocess
+from utils.connection import Connections
 from utils.model import User
 from utils.constants import USER_POPULATION
 from utils.helpers import display_statistics
+from utils.helpers import generate_inprocess_cache_async
+
+async_engine = Connections.get_async_db_connection()
+cache_inprocess = Connections.get_inprocess_cache()
 
 AsyncSessionLocal = sessionmaker(
     async_engine, expire_on_commit=False, class_=AsyncSession
@@ -48,8 +52,8 @@ async def get_user_data(uid : int):
         user_data = cache_data
     return user_data  
         
-async def main():  
-    await generate_cache(cache_inprocess)
+async def main()-> None:  
+    await generate_inprocess_cache_async(cache_inprocess)
     start               = time.perf_counter()
     all_users           = []
     for uid in range(1, USER_POPULATION+1):

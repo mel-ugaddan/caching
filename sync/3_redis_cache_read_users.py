@@ -6,16 +6,19 @@ from sqlalchemy.orm import Session
 import orjson
 import time
 from sqlalchemy import select
-from utils.connection import engine,cache_redis
+from utils.connection import Connections
 from utils.model import User
 from utils.helpers import generate_redis_cache
 from utils.constants import USER_POPULATION
 from utils.helpers import display_statistics
 
+engine = Connections.get_db_connection()
+cache_redis = Connections.get_redis_connection()
 generate_redis_cache(engine, cache_redis)
 
 start = time.perf_counter()
 all_users = []
+
 for uid in range(1,USER_POPULATION+1):
     cache_key = f"user-{uid}"
     cache_data = cache_redis.get(cache_key)

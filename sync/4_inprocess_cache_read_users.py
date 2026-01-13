@@ -5,11 +5,14 @@ sys.path.append(root)
 from sqlalchemy.orm import Session
 import time
 from sqlalchemy import select
-from utils.connection import engine,cache_inprocess
+from utils.connection import Connections
 from utils.model import User
 from utils.helpers import generate_inprocess_cache
 from utils.constants import USER_POPULATION
 from utils.helpers import display_statistics
+
+engine = Connections.get_db_connection()
+cache_inprocess = Connections.get_inprocess_cache()
 
 generate_inprocess_cache(engine, cache_inprocess)
 start = time.perf_counter()

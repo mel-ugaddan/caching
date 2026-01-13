@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import sessionmaker
 
-from utils.connection import async_engine
+from utils.connection import Connections
 from utils.model import User
 from utils.constants import USER_POPULATION
 from utils.helpers import display_statistics
@@ -17,6 +17,7 @@ from utils.helpers import display_statistics
 import uvloop
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
+async_engine = Connections.get_async_db_connection()
 AsyncSessionLocal   = sessionmaker(
     async_engine, expire_on_commit=False, class_=AsyncSession
 )

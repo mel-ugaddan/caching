@@ -4,7 +4,7 @@ from utils.model import User
 import orjson
 from cachetools import TTLCache
 from sqlalchemy.engine import Engine
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession,AsyncEngine
 from sqlalchemy import select
 import orjson
 from utils.constants import REDIS_TTL
@@ -36,7 +36,7 @@ def generate_inprocess_cache(engine : Engine, cache_inprocess : TTLCache ) -> No
             }
             cache_inprocess[cache_key] = data
 
-async def generate_redis_cache_async(engine: Engine, cache_redis: redis.asyncio.Redis) -> None:
+async def generate_redis_cache_async(engine: AsyncEngine, cache_redis: redis.asyncio.Redis) -> None:
     async with AsyncSession(engine) as session:
         stmt = select(User)
         result = await session.execute(stmt)
@@ -49,23 +49,21 @@ async def generate_redis_cache_async(engine: Engine, cache_redis: redis.asyncio.
                 "age": user.age
             }
             await cache_redis.set(cache_key, orjson.dumps(data), ex=REDIS_TTL) 
-            
-async def generate_aredis_cache_async(engine : Engine, cache_redis : redis.asyncio.Redis) -> None:
+
+async def generate_inprocess_cache_async(engine: AsyncEngine, cache_inprocess : TTLCache ) -> None:
     async with AsyncSession(engine) as session:
-        result = await session.execute(select(User))
-        users = result.scalars().all()
+        stmt = select(User)
+        result = await session.execute(stmt)
+        users = result.scalars().all() 
         for user in users:
             cache_key = f"user-{user.id}"
             data = {
                 "id": user.id,
                 "name": user.name,
-                "age": user.age,
-                "posts": [ 
-                    {"id": post.id, "title": post.title, "text": post.text } for post in user.posts
-                ]
+                "age": user.age
             }
-            await cache_redis.set(cache_key, orjson.dumps(data), ex=REDIS_TTL)
-            
+            cache_inprocess[cache_key] = data
+
 def display_statistics(start : float, end : float, no_of_items : int ) -> None:
     elapsed = end - start
     rps     = len(no_of_items) / elapsed

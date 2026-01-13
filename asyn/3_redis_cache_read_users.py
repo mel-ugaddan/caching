@@ -8,11 +8,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 import uvloop
 import time
-from utils.connection import async_engine,async_cache_redis
+
+from utils.connection import Connections
 from utils.model import User
 from utils.helpers import generate_redis_cache_async
 from utils.constants import USER_POPULATION
 from utils.helpers import display_statistics
+
+from sqlalchemy.ext.asyncio import AsyncEngine
 
 import orjson
 serializer_fn   = orjson.dumps
@@ -20,7 +23,10 @@ deserializer_fn = orjson.loads
 
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
-async def fetch_user(uid: int, async_engine ) -> dict:
+async_engine = Connections.get_async_db_connection()
+async_cache_redis = Connections.get_async_redis_connection()
+
+async def fetch_user(uid: int, async_engine : AsyncEngine ) -> dict:
     cache_key   = f"user-{uid}"
     cache_data  = await async_cache_redis.get(cache_key)
     if cache_data is None:

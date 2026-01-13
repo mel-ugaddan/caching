@@ -1,16 +1,27 @@
 # Caching
-Caching is a fundamental systems design technique used to mitigate high-latency disk access and reduce network I/O in backend services. 
-By storing frequently accessed or computationally expensive data in faster storage layers—typically memory—caching significantly 
+Caching is a fundamental systems design technique used to mitigate high-latency disk access and reduce network I/O load in backend services. 
+By storing frequently or recenty accessed data in faster storage layers—typically memory—caching significantly 
 reduces I/O load and disk latency on database systems such as PostgreSQL or NoSQL stores.
 
 From a backend engineering perspective, caching is often a prerequisite for building scalable systems. Caching strategies 
 can take many forms, including CDNs, in-process caches, browser-level (HTTP) caching, and distributed caches using systems like 
 Redis or Memcached.
 
-In this mini-blog, I will compare and analyze the latency for read operations under different caching setups. Our setup is 
-that 
+In this mini-blog, I will compare and analyze the latency for read operations under different caching setups. Our setup is that 
+we have a User model that has the following fields :
 
-### Read Performance Comparison (Sync Version)
+```
+class User(Base):
+    __tablename__                   = "users"
+    id : Mapped[int]                = Column(Integer, primary_key=True)
+    name : Mapped[str]              = Column(String)
+    age : Mapped[int]               = Column(Integer)
+```
+
+Our `User` field have `name`, `id` and `age` column. This is a small data model. First we have the result of using 
+sync version :
+
+#### Read Performance Comparison (Sync Version)
 
 | Storage Layer        | Avg Latency (µs) | Throughput (ops/sec) |
 |----------------------|------------------|----------------------|
@@ -19,9 +30,9 @@ that
 | Redis (Distributed)  |152.46            | 6559                 |
 | In-process Cache     |1.99              | 503180               |
 
-Lorem, ipsum
+Then, we use the async version :
 
-### Read Performance Comparison (Async Version)
+#### Read Performance Comparison (Async Version)
 
 | Storage Layer        | Avg Latency (ms) | Throughput (ops/sec) |
 |----------------------|------------------|----------------------|
@@ -29,6 +40,9 @@ Lorem, ipsum
 | PostgreSQL (Disk) w/o ORM | 890.30      | 1123                 |
 | Redis (Distributed)  | 169.87           | 5887                 |
 | In-process Cache     | 1.99             | 501278               |
+
+From our tables, we can see that the async abstraction creates a minimal latency overhead. Overall, we can see how blazingly fast using In-process
+cache.
 
 ---
 

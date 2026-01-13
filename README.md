@@ -14,8 +14,8 @@ that
 
 | Storage Layer        | Avg Latency (µs) | Throughput (ops/sec) |
 |----------------------|------------------|----------------------|
-| PostgreSQL (Disk)    |2520.19           |  397                 |
-| PostgreSQL (Disk) w/o ORM |637.23           |  1569                 |
+| PostgreSQL (Disk)    |1051.61           | 951                  |
+| PostgreSQL (Disk) w/o ORM | 828.84      | 1207                 |
 | Redis (Distributed)  |152.46            | 6559                 |
 | In-process Cache     |1.99              | 503180               |
 
@@ -25,10 +25,10 @@ Lorem, ipsum
 
 | Storage Layer        | Avg Latency (ms) | Throughput (ops/sec) |
 |----------------------|------------------|----------------------|
-| PostgreSQL (Disk)    |1082.11           | 924                  |
-| PostgreSQL (Disk) w/o ORM |768.96       |  1300                 |
-| Redis (Distributed)  |                  |                      |
-| In-process Cache     |                  |                      |
+| PostgreSQL (Disk)    | 1082.11          | 924                  |
+| PostgreSQL (Disk) w/o ORM | 890.30      | 1123                 |
+| Redis (Distributed)  | 169.87           | 5887                 |
+| In-process Cache     | 1.99             | 501278               |
 
 ---
 

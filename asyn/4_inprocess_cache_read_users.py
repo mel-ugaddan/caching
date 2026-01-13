@@ -12,6 +12,7 @@ import asyncio
 from utils.connection import async_engine,cache_inprocess
 from utils.model import User
 from utils.constants import USER_POPULATION
+from utils.helpers import display_statistics
 
 AsyncSessionLocal = sessionmaker(
     async_engine, expire_on_commit=False, class_=AsyncSession
@@ -31,7 +32,7 @@ async def generate_cache(cache_inprocess : TTLCache) -> None:
             cache_inprocess[cache_key] = data
           
 
-async def get_user_data(uid):
+async def get_user_data(uid : int):
     cache_key = f"user-{uid}"
     cache_data = cache_inprocess.get(cache_key)
     if cache_data is None:
@@ -41,8 +42,7 @@ async def get_user_data(uid):
             user_data = {
                 'id': db_user.id,
                 'name': db_user.name,
-                'age': db_user.age,
-                'posts' : [ {"title" : post.title, "user_id" : post.user_id, "text" : post.text }  for post in db_user.posts ]
+                'age': db_user.age
             }
     else:
         user_data = cache_data
@@ -57,13 +57,7 @@ async def main():
         all_users.append(user_data)
 
     end     = time.perf_counter()
-    elapsed = end - start
-    rps     = len(all_users) / elapsed
-
-    print(f"")
-    print(f"In-process          :")
-    print(f"Total time          : {elapsed/len(all_users):.6f} s")
-    print(f"Throughput          : {rps:.0f} req/s")
-
+    display_statistics(start,end,len(all_users))
+    
 if __name__ == "__main__":
     asyncio.run(main())

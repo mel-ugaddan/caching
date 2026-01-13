@@ -10,6 +10,7 @@ from utils.connection import engine,cache_redis
 from utils.model import User
 from utils.helpers import generate_redis_cache
 from utils.constants import USER_POPULATION
+from utils.helpers import display_statistics
 
 generate_redis_cache(engine, cache_redis)
 
@@ -36,12 +37,4 @@ for uid in range(1,USER_POPULATION+1):
         })
         
 end     = time.perf_counter()
-elapsed = end - start
-rps     = len(all_users) / elapsed
-
-print(f"")
-print(f"Redis Cache         :")
-print(f"Total time          : {elapsed/len(all_users):.10f} s")
-print(f"Throughput          : {rps:.0f} req/s")
-
-
+display_statistics(start,end,len(all_users))

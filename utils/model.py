@@ -10,7 +10,7 @@ class User(Base):
     id : Mapped[int]                = Column(Integer, primary_key=True)
     name : Mapped[str]              = Column(String)
     age : Mapped[int]               = Column(Integer)
-    posts : Mapped[List["Post"]]    = relationship(back_populates="user",lazy="selectin")
+    posts : Mapped[List["Post"]]    = relationship(back_populates="user")
     
 class Post(Base):
     __tablename__           = "posts"

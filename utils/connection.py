@@ -22,7 +22,8 @@ REDIS_PORT  = str(os.getenv("REDIS_PORT"))
 
 db_url      = f"postgresql+psycopg2://{DB_USER}:{DB_PW}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 engine = create_engine(
-    db_url
+    db_url,
+    # echo=True 
 )
 
 cache_redis         = redis.Redis(host=REDIS_HOST,port=REDIS_PORT)
@@ -31,6 +32,7 @@ cache_inprocess     = TTLCache(maxsize=IN_PROCESS_MAXSIZE, ttl=IN_PROCESS_TTL)
 
 async_db_url    = f"postgresql+asyncpg://{DB_USER}:{DB_PW}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 async_engine    = create_async_engine(
-    async_db_url
+    async_db_url,
+    # echo=True 
 )
 

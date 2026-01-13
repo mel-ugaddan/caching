@@ -7,16 +7,28 @@ From a backend engineering perspective, caching is often a prerequisite for buil
 can take many forms, including CDNs, in-process caches, browser-level (HTTP) caching, and distributed caches using systems like 
 Redis or Memcached.
 
-In this mini-blog, I will benchmark and analyze server response latency for read operations under different caching setups.
+In this mini-blog, I will compare and analyze the latency for read operations under different caching setups. Our setup is 
+that 
 
+### Read Performance Comparison (Sync Version)
 
-## Read Performance Comparison
+| Storage Layer        | Avg Latency (µs) | Throughput (ops/sec) |
+|----------------------|------------------|----------------------|
+| PostgreSQL (Disk)    |2520.19           |  397                 |
+| PostgreSQL (Disk) w/o ORM |637.23           |  1569                 |
+| Redis (Distributed)  |152.46            | 6559                 |
+| In-process Cache     |1.99              | 503180               |
+
+Lorem, ipsum
+
+### Read Performance Comparison (Async Version)
 
 | Storage Layer        | Avg Latency (ms) | Throughput (ops/sec) |
 |----------------------|------------------|----------------------|
-| PostgreSQL (Disk)    | 5 – 15           | 1k – 5k              |
-| Redis (Distributed)  | 0.3 – 1.2        | 50k – 200k           |
-| In-process Cache     | 0.01 – 0.05      | 1M+                  |
+| PostgreSQL (Disk)    |1082.11           | 924                  |
+| PostgreSQL (Disk) w/o ORM |768.96       |  1300                 |
+| Redis (Distributed)  |                  |                      |
+| In-process Cache     |                  |                      |
 
 ---
 

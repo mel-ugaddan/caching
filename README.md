@@ -81,4 +81,4 @@ Effective caching is not about always choosing the fastest option—it's about m
 
 ## AI Assistance
 
-This project was developed with ~50% assistance from Claude AI for code generation and documentation. Part of my exploration into LLM-assisted development workflows.
+This project was developed with ~50% assistance from Claude AI for code generation and documentation. Part of my exploration into LLM-assisted development workflows. I mainly use Sonnet, can't wait what Claude Opus has to offer. I've extensively use GPT-5-mini on my research and some Gemini as well : Overally, I find Anthropic LLMs have better User Experience, generated text and code.
